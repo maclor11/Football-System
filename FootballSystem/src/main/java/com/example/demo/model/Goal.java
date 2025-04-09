@@ -24,8 +24,8 @@ public class Goal {
 	
 	@NotBlank
 	@Positive
-	@Column(name = "minute", nullable=false)
-	private int minute;
+	@Column(name = "goal_minute", nullable=false)
+	private Integer minute;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -36,12 +36,12 @@ public class Player {
 	@NotBlank
 	@PositiveOrZero
 	@Column(name = "goals", nullable=false, updatable=true)
-	private int goals;
+	private Integer goals;
 	
 	@NotBlank
 	@PositiveOrZero
 	@Column(name = "assists", nullable=false, updatable=true)
-	private int assists;
+	private Integer assists;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)

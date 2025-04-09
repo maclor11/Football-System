@@ -25,7 +25,7 @@ public class Match {
 	@NotBlank
 	@Positive
 	@Column(name = "roundNumber", nullable=false, updatable=false)
-	private int roundNumber;
+	private Integer roundNumber;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -34,22 +34,12 @@ public class Match {
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "quest_id")
-	private Club quest;
+	@JoinColumn(name = "guest_id")
+	private Club guest;
 	
 	@NotBlank
 	@Column(name = "date", nullable=true)
 	private LocalDateTime date;
-	
-	@NotBlank
-	@PositiveOrZero
-	@Column(name = "hostGoals", nullable=false)
-	private int hostGoals;
-	
-	@NotBlank
-	@PositiveOrZero
-	@Column(name = "questGoals", nullable=false)
-	private int questGoals;
 	
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "match")
