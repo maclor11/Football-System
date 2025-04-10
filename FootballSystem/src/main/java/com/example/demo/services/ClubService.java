@@ -31,4 +31,14 @@ public class ClubService {
 		ClubDTO clubDTO = new ClubDTO(name,budget, points,goalBalance,coachSurname);
 		clubRepository.save(clubMapper.toEntity(clubDTO));
 	}
+	
+	public void deleteClubById(Long id){
+		clubRepository.deleteById(id);
+	}
+	
+	public void updateClub(Long id, String name, Long budget, Integer points, Integer goalBalance, String coachSurname) {
+		ClubDTO clubDTO = new ClubDTO(id,name,budget, points,goalBalance,coachSurname);
+		clubRepository.save(clubMapper.toEntity(clubDTO));
+	}
+	
 }
