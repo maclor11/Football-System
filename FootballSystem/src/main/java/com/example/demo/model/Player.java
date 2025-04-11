@@ -47,4 +47,101 @@ public class Player {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "club")
 	private Club club;
+	
+	public Player() {
+		
+	}
+
+	public Player(Long id, @NotBlank String firstName, @NotBlank String lastName, @NotBlank Character position,
+			@NotBlank Character betterFoot, @NotBlank @PositiveOrZero Integer goals,
+			@NotBlank @PositiveOrZero Integer assists, @NotNull Club club) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.position = position;
+		this.betterFoot = betterFoot;
+		this.goals = goals;
+		this.assists = assists;
+		this.club = club;
+	}
+	
+	public Player(@NotBlank String firstName, @NotBlank String lastName, @NotBlank Character position,
+			@NotBlank Character betterFoot, @NotBlank @PositiveOrZero Integer goals,
+			@NotBlank @PositiveOrZero Integer assists, @NotNull Club club) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.position = position;
+		this.betterFoot = betterFoot;
+		this.goals = goals;
+		this.assists = assists;
+		this.club = club;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Character getPosition() {
+		return position;
+	}
+
+	public void setPosition(Character position) {
+		this.position = position;
+	}
+
+	public Character getBetterFoot() {
+		return betterFoot;
+	}
+
+	public void setBetterFoot(Character betterFoot) {
+		this.betterFoot = betterFoot;
+	}
+
+	public Integer getGoals() {
+		return goals;
+	}
+
+	public void setGoals(Integer goals) {
+		this.goals = goals;
+	}
+
+	public Integer getAssists() {
+		return assists;
+	}
+
+	public void setAssists(Integer assists) {
+		this.assists = assists;
+	}
+
+	public Club getClub() {
+		return club;
+	}
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+	
+	
 }

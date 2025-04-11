@@ -1,10 +1,10 @@
-package com.example.demo.dto;
+package com.example.demo.Dto;
 
 import com.example.demo.model.Match;
 import com.example.demo.model.Player;
 
 
-public class GoalDTO {
+public class GoalDto {
 	private Long id;
 	private Match match;
 	private Integer minute;

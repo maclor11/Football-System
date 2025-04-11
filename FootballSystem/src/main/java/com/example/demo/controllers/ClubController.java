@@ -1,19 +1,24 @@
 package com.example.demo.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.ClubDTO;
+import com.example.demo.Dto.ClubDto;
+import com.example.demo.Dto.PlayerDto;
+import com.example.demo.model.Club;
 import com.example.demo.services.ClubService;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 @RestController
+@RequestMapping(path = "/club")
 public class ClubController {
 	
 	private ClubService clubService;
@@ -23,23 +28,33 @@ public class ClubController {
 		this.clubService = clubService;
 	}
 	
-	@GetMapping(path = "/clubs")
-	public List<ClubDTO> findAllClubs(){
+	@GetMapping
+	public CollectionModel<ClubDto> findAllClubs(){
 		return clubService.findAllClubs();
 	}
 	
-	@PostMapping(path = "/addClub")
-	public void addClub( @RequestParam String name, @RequestParam Long budget,@RequestParam Integer points,@RequestParam Integer goalBalance,@RequestParam String coachSurname) {
-		clubService.addClub(name, budget, points, goalBalance, coachSurname);
+	/*
+	 * @PostMapping public void addClub(@RequestBody ClubDto clubDto) {
+	 * clubService.addClub(clubDto); }
+	 */
+	
+	@GetMapping(path = "/{id}")
+	public ClubDto findClubById(@PathVariable Long id){
+		return clubService.findClubById(id);
 	}
 	
-	@DeleteMapping(path = "/deleteClub")
-	public void deleteClubById(@RequestParam Long id) {
+	@DeleteMapping(path = "/{id}")
+	public void deleteClubById(@PathVariable Long id) {
 		clubService.deleteClubById(id);
 	}
 	
-	@PutMapping(path = "/updateClub")
-	public void updateClub(@RequestParam Long id, @RequestParam String name, @RequestParam Long budget,@RequestParam Integer points,@RequestParam Integer goalBalance,@RequestParam String coachSurname) {
-		clubService.updateClub(id, name, budget, points, goalBalance, coachSurname);
+	/*
+	 * @PutMapping(path = "/{id}") public void updateClub(@PathVariable Long
+	 * id, @RequestBody ClubDto clubDto) { clubService.updateClub(clubDto); }
+	 */
+	
+	@GetMapping(path = "/{id}/players")
+	public CollectionModel<PlayerDto> getPlayersForClub(@PathVariable Long id){
+		return clubService.getPlayersForClub(id);
 	}
 }
