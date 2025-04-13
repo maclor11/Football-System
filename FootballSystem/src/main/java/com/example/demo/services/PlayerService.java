@@ -3,8 +3,10 @@ package com.example.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.Dto.PlayerDto;
+import com.example.demo.model.Club;
 import com.example.demo.model.Player;
 import com.example.demo.repositories.PlayerRepository;
 
@@ -35,5 +37,10 @@ public class PlayerService {
 
     public void deletePlayerById(Long id) {
         playerRepository.deleteById(id);
+    }
+    
+    public Club getClubForPlayer(@PathVariable Long id) {
+    	Player player = playerRepository.findById(id).orElse(null);
+    	return player.getClub();
     }
 }
