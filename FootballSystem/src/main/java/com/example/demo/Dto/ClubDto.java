@@ -2,6 +2,7 @@ package com.example.demo.Dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo; 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -29,8 +30,6 @@ public class ClubDto extends RepresentationModel<ClubDto>{
 		this.add(linkTo(methodOn(ClubController.class)
 				.getPlayersForClub(club.getId())).withRel("players"));
 	}
-	
-	
 	
 	 public Long getId() { return id; } public void setId(Long id) { this.id = id;
 	 }

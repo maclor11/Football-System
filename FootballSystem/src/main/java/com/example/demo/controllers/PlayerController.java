@@ -5,7 +5,9 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dto.PlayerDto;
@@ -40,6 +42,12 @@ public class PlayerController {
     @GetMapping(path = "/{id}/club")
     public Club getClubForPlayer(@PathVariable Long id) {
     	return playerService.getClubForPlayer(id);
+    }
+    
+    @PostMapping
+    public void addPlayer(@RequestParam String firstName, @RequestParam String lastName, @RequestParam Character position,
+    		@RequestParam Character betterFoot, @RequestParam Integer goals, @RequestParam Integer assists, @RequestParam Club club) {
+    	playerService.addPlayer(firstName,lastName,position, betterFoot, goals, assists, club);
     }
     
 

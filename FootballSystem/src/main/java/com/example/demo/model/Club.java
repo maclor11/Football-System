@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import java.util.Set;
 
+import com.example.demo.Dto.ClubDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,63 +12,59 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Club {
 	@Id
-	@GeneratedValue
-	private Long id; 
-	
-	@Column(name = "name", nullable=false)
-	private String name;
-	
-	@PositiveOrZero
-	@Column(name = "budget", nullable=true)
-	private Long budget; 
-	
-	@PositiveOrZero
-	@Column(name="points", nullable=false)
-	private Integer points;
-	
-	@Column(name = "goal_balance", nullable=false)
-	private Integer goalBalance;
-	
-	@Column(name = "coachSurname", nullable=false)
-	private String coachSurname;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "club", cascade = CascadeType.ALL) 
-	private Set<Player> players;
+ 	@GeneratedValue
+ 	private Long id; 
+ 
+	@NotBlank
+ 	@Column(name = "name", nullable=false)
+ 	private String name;
+ 	
+ 	@PositiveOrZero
+ 	@Column(name = "budget", nullable=true)
+ 	private Long budget; 
+ 
+ 	@PositiveOrZero
+ 	@Column(name="points", nullable=false)
+ 	private Integer points;
+ 	
+ 	@Column(name = "goal_balance", nullable=false)
+ 	private Integer goalBalance;
+ 
+ 	@NotBlank
+ 	@Column(name = "coachSurname", nullable=false)
+ 	private String coachSurname;
+ 
+ 	 @OneToMany(fetch = FetchType.LAZY, mappedBy = "club", cascade =
+ 	 CascadeType.ALL) private Set<Player> players;
 	 
 	
 	public Club() {};
 
-	public Club(String name,  Long budget,
-				@PositiveOrZero Integer points, Integer goalBalance, String coachSurname,
-				@NotNull Set<Player> players) {
-			super();
-			this.name = name;
-			this.budget = budget;
-			this.points = points;
-			this.goalBalance = goalBalance;
-			this.coachSurname = coachSurname;
-			this.players = players;
+	public Club(ClubDto clubDto) {
+		super();
+		this.name = clubDto.getName();
+		this.budget = clubDto.getBudget();
+		this.points = clubDto.getPoints();
+		this.goalBalance = clubDto.getGoalBalance();
+		this.coachSurname = clubDto.getCoachSurname();
+	}
+	
+	public Club(Long id, ClubDto clubDto) {
+		super();
+		this.id = id;
+		this.name = clubDto.getName();
+		this.budget = clubDto.getBudget();
+		this.points = clubDto.getPoints();
+		this.goalBalance = clubDto.getGoalBalance();
+		this.coachSurname = clubDto.getCoachSurname();
 	}
 		
-		
-	public Club(Long id, @NotBlank String name, @NotBlank @PositiveOrZero Long budget,
-				@NotBlank @PositiveOrZero Integer points, @NotBlank Integer goalBalance, @NotBlank String coachSurname,
-				@NotNull Set<Player> players) {
-			super();
-			this.id = id;
-			this.name = name;
-			this.budget = budget;
-			this.points = points;
-			this.goalBalance = goalBalance;
-			this.coachSurname = coachSurname;
-			this.players = players;
-	}
+
 		
 	public Long getId() {
 		return id;

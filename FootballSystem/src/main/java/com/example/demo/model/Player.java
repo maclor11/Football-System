@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,24 +27,21 @@ public class Player {
 	@Column(name = "lastName", nullable=false, updatable=false)
 	private String lastName;
 	
-	@NotBlank
 	@Column(name = "position", nullable=false, updatable=true)
 	private Character position;
 	
-	@NotBlank
 	@Column(name = "betterFoot", nullable=false, updatable=false)
 	private Character betterFoot;
 	
-	@NotBlank
 	@PositiveOrZero
 	@Column(name = "goals", nullable=false, updatable=true)
 	private Integer goals;
 	
-	@NotBlank
 	@PositiveOrZero
 	@Column(name = "assists", nullable=false, updatable=true)
 	private Integer assists;
 	
+	@JsonIgnore
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "club")
@@ -52,9 +51,9 @@ public class Player {
 		
 	}
 
-	public Player(Long id, @NotBlank String firstName, @NotBlank String lastName, @NotBlank Character position,
-			@NotBlank Character betterFoot, @NotBlank @PositiveOrZero Integer goals,
-			@NotBlank @PositiveOrZero Integer assists, @NotNull Club club) {
+	public Player(Long id, @NotBlank String firstName, @NotBlank String lastName,  Character position,
+			 Character betterFoot,  @PositiveOrZero Integer goals,
+			 @PositiveOrZero Integer assists, @NotNull Club club) {
 		super();
 		this.id = id;
 		this.firstName = firstName;

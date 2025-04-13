@@ -8,15 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Dto.*;
-
+import com.example.demo.Dto.ClubDto;
+import com.example.demo.Dto.PlayerDto;
 import com.example.demo.model.Club;
 import com.example.demo.repositories.ClubRepository;
 
 @Service
 public class ClubService {
 	private final ClubRepository clubRepository;
-	//private final ClubMapper clubMapper;
 	
 	@Autowired
 	public ClubService(ClubRepository clubRepository) {
@@ -34,26 +33,21 @@ public class ClubService {
 		Club club = clubRepository.findById(id).orElse(null);
 		return new ClubDto(club);
 	}
-	/*
-	 * public void addClub(ClubDto clubDto) { Club club = new Club();
-	 * club.setName(clubDto.getName()); club.setBudget(clubDto.getBudget());
-	 * club.setCoachSurname(clubDto.getCoachSurname());
-	 * club.setGoalBalance(clubDto.getGoalBalance());
-	 * club.setPoints(clubDto.getPoints()); clubRepository.save(club); }
-	 */
+	
+	public void addClub(ClubDto clubDto) {
+ 		clubRepository.save(new Club(clubDto));
+ 	}
+	
+	public void updateClub(Long id, ClubDto clubDto) {
+ 		clubRepository.save(new Club(id,clubDto));
+ 	}
+	 
 	
 	public void deleteClubById(Long id){
 		clubRepository.deleteById(id);
 	}
 	
-	/*
-	 * public void updateClub(ClubDto clubDto) { Club club = new Club();
-	 * club.setId(clubDto.getId()); club.setName(clubDto.getName());
-	 * club.setBudget(clubDto.getBudget());
-	 * club.setCoachSurname(clubDto.getCoachSurname());
-	 * club.setGoalBalance(clubDto.getGoalBalance());
-	 * club.setPoints(clubDto.getPoints()); clubRepository.save(club); }
-	 */
+
 	
 	public CollectionModel<PlayerDto> getPlayersForClub(Long id){
 		Club club = clubRepository.findById(id)
