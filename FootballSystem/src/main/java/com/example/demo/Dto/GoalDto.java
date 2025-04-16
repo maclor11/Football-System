@@ -62,4 +62,5 @@ public class GoalDto {
     public void setAssistant(Player assistant) {
         this.assistant = assistant;
     }
+    
 }

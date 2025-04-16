@@ -63,5 +63,5 @@ public class MatchController {
 	 @GetMapping(path = "/{id}/goals")
 	    public CollectionModel<GoalDto> getGoalsForMatch(@PathVariable Long id) {
 	        return matchService.getGoalsForMatch(id);
-	 }
+	 } 
 }

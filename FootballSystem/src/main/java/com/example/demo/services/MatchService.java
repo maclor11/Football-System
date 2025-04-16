@@ -71,6 +71,5 @@ public class MatchService {
                 .map(GoalDto::new)
                 .collect(Collectors.toList());
         return CollectionModel.of(goalsDTO);
-    }
-
+    }   
 }

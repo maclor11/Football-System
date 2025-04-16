@@ -1,9 +1,10 @@
 package com.example.demo.Dto;
 
 import org.springframework.hateoas.RepresentationModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo; 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.example.demo.controllers.PlayerController;
-import com.example.demo.model.Club;
 import com.example.demo.model.Player;
 
 public class PlayerDto extends RepresentationModel<PlayerDto>{
@@ -24,9 +25,8 @@ public class PlayerDto extends RepresentationModel<PlayerDto>{
 		this.betterFoot = player.getBetterFoot();
 		this.goals = player.getGoals();
 		this.assists = player.getAssists();
-		// ODKOMENTUJ JAK ZROBISZ METODE GETCLUBFORPLAYER W CONTROLLERZE!!!
-		//this.add(linkTo(methodOn(PlayerController.class)
-		//		.getClubForPlayer(player.getId())).withRel("club"));
+		this.add(linkTo(methodOn(PlayerController.class)
+				.getClubForPlayer(player.getId())).withRel("club"));
 	}
 
 	public Long getId() {

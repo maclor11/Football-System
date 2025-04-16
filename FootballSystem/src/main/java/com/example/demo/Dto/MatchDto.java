@@ -3,6 +3,10 @@ package com.example.demo.Dto;
 import java.time.LocalDateTime;
 
 import org.springframework.hateoas.CollectionModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo; 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import org.springframework.hateoas.Link;
+
 
 import com.example.demo.model.Club;
 import com.example.demo.controllers.MatchController;
@@ -23,8 +27,8 @@ public class MatchDto {
         this.roundNumber = match.getRoundNumber();
         this.host = match.getHost();
         this.guest = match.getGuest();
-        this.date = match.getDate();
-        //cos jest z tym nie tak
+        this.date = match.getDate();  
+        //cos jest nie tak z tym
         //this.add(linkTo(methodOn(MatchController.class)
         //        .getGoalsForMatch(match.getId())).withRel("goals"));
     }

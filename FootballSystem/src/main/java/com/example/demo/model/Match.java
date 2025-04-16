@@ -115,5 +115,5 @@ public class Match {
 
 	 public void setGoals(List<Goal> goals) {
 	     this.goals = goals;
-	 }	    
+	 }	
 }
