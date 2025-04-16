@@ -46,13 +46,13 @@ public class MatchController {
 	       matchService.deleteMatchById(id);
 	}
 	    
-	    /*
-	     * @PostMapping
-	     * public void addMatch(@RequestBody MatchDto matchDto) {
-	     *     matchService.addMatch(matchDto);
-	     * }
-	     */
 	    
+	@PostMapping
+	public void addMatch(@RequestBody MatchDto matchDto) {
+	    matchService.addMatch(matchDto);
+	}
+
+	       
 	    /*
 	     * @PutMapping(path = "/{id}")
 	     * public void updateMatch(@PathVariable Long id, @RequestBody MatchDto matchDto) {

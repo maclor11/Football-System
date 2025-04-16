@@ -6,13 +6,13 @@ import org.springframework.hateoas.CollectionModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo; 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.hateoas.Link;
-
+import org.springframework.hateoas.RepresentationModel;
 
 import com.example.demo.model.Club;
 import com.example.demo.controllers.MatchController;
 import com.example.demo.model.Match;
 
-public class MatchDto {
+public class MatchDto extends RepresentationModel<MatchDto>{
     private Long id;
     private Integer roundNumber;
     private Club host;
@@ -28,12 +28,10 @@ public class MatchDto {
         this.host = match.getHost();
         this.guest = match.getGuest();
         this.date = match.getDate();  
-        //cos jest nie tak z tym
-        //this.add(linkTo(methodOn(MatchController.class)
-        //        .getGoalsForMatch(match.getId())).withRel("goals"));
+        this.add(linkTo(methodOn(MatchController.class)
+               .getGoalsForMatch(match.getId())).withRel("goals"));
     }
- 
-    
+   
 	public Long getId() {
         return id;
     }

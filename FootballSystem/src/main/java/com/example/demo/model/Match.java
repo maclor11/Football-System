@@ -25,7 +25,7 @@ public class Match {
 	@GeneratedValue
 	private Long id;
 	
-	@NotBlank
+	//@NotBlank
 	@Positive
 	@Column(name = "roundNumber", nullable=false, updatable=false)
 	private Integer roundNumber;

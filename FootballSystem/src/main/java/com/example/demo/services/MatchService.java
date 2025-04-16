@@ -37,16 +37,16 @@ public class MatchService {
         return new MatchDto(match);
     }
     
-    /*
-     * public void addMatch(MatchDto matchDto) {
-     *     Match match = new Match();
-     *     match.setRoundNumber(matchDto.getRoundNumber());
-     *     match.setHost(matchDto.getHost());
-     *     match.setGuest(matchDto.getGuest());
-     *     match.setDate(matchDto.getDate());
-     *     matchRepository.save(match);
-     * }
-     */
+    
+    public void addMatch(MatchDto matchDto) {
+        Match match = new Match();
+        match.setRoundNumber(matchDto.getRoundNumber());
+        match.setHost(matchDto.getHost());
+        match.setGuest(matchDto.getGuest());
+        match.setDate(matchDto.getDate());
+        matchRepository.save(match);
+    }
+
     
     public void deleteMatchById(Long id) {
         matchRepository.deleteById(id);
