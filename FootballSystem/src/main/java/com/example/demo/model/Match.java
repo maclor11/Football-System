@@ -15,8 +15,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+@Entity 
 public class Match {
 	@Id
 	@GeneratedValue
@@ -44,4 +47,73 @@ public class Match {
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "match")
 	private List<Goal> goals;
+	
+	 public Match() {}
+
+	 public Match(Integer roundNumber, Club host, Club guest, LocalDateTime date) {
+	     this.roundNumber = roundNumber;
+	     this.host = host;
+	     this.guest = guest;
+	     this.date = date;
+	 }
+	    
+     public Match(Long id, Integer roundNumber, Club host, Club guest, 
+       LocalDateTime date, List<Goal> goals) {
+         super();
+         this.id = id;
+         this.roundNumber = roundNumber;
+         this.host = host;
+         this.guest = guest;
+         this.date = date;
+         this.goals = goals;
+     }
+
+
+	 public Long getId() {
+		 return id;
+	 }
+
+	 public void setId(Long id) {
+	     this.id = id;
+	 }
+
+	 public Integer getRoundNumber() {
+	     return roundNumber;
+	 }
+
+	 public void setRoundNumber(Integer roundNumber) {
+	     this.roundNumber = roundNumber;
+	 }
+
+	 public Club getHost() {
+	     return host;
+	 }
+
+	 public void setHost(Club host) {
+	     this.host = host;
+	 }
+
+	 public Club getGuest() {
+	     return guest;
+	 }
+
+	 public void setGuest(Club guest) {
+	     this.guest = guest;
+	 }
+
+	 public LocalDateTime getDate() {
+	     return date;
+	 }
+
+	 public void setDate(LocalDateTime date) {
+	     this.date = date;
+	 }
+
+	 public List<Goal> getGoals() {
+	     return goals;
+	 }
+
+	 public void setGoals(List<Goal> goals) {
+	     this.goals = goals;
+	 }	    
 }
