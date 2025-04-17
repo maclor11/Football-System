@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.Dto.ClubDto;
 import com.example.demo.Dto.GoalDto;
@@ -19,11 +21,12 @@ import com.example.demo.Dto.PlayerDto;
 import com.example.demo.services.ClubService;
 import com.example.demo.services.MatchService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 @RestController
 @RequestMapping(path = "/match")
 public class MatchController {
+	
 	private final MatchService matchService;
 	
 	@Autowired
@@ -52,13 +55,11 @@ public class MatchController {
 	    matchService.addMatch(matchDto);
 	}
 
-	       
-	    /*
-	     * @PutMapping(path = "/{id}")
-	     * public void updateMatch(@PathVariable Long id, @RequestBody MatchDto matchDto) {
-	     *     matchService.updateMatch(matchDto);
-	     * }
-	     */
+     @PutMapping(path = "/{id}")
+     public void updateMatch(@PathVariable Long id, @RequestBody MatchDto matchDto) {
+         matchService.updateMatch(id, matchDto);
+     }
+	     
 	    
 	 @GetMapping(path = "/{id}/goals")
 	    public CollectionModel<GoalDto> getGoalsForMatch(@PathVariable Long id) {

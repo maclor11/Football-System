@@ -45,8 +45,16 @@ public class PlayerService {
     	return player.getClub();
     }
     
-    public void addPlayer(String firstName, String lastName, Character position, Character betterFoot, Integer goals, Integer assists,  Club club) {
-    	Player player = new Player(firstName,lastName,position, betterFoot, goals, assists, club);
-    	playerRepository.save(player);
+	/*
+	 * public void setClubForPlayer(Long playerId, Long clubId) { Player player =
+	 * playerRepository.findById(playerId).orElse(null); player }
+	 */
+    
+    public void addPlayer(PlayerDto playerDto) {
+    	playerRepository.save(new Player(playerDto));
+    }
+    
+    public void updatePlayer(Long id, PlayerDto playerDto) {
+    	playerRepository.save(new Player(id, playerDto));
     }
 }

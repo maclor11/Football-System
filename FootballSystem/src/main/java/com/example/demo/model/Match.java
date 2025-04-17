@@ -42,7 +42,7 @@ public class Match {
 	@Column(name = "date", nullable=true)
 	private LocalDateTime date;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "match")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "match")
 	private List<Goal> goals;
 	
 	 public Match() {}
@@ -60,7 +60,6 @@ public class Match {
          this.host = matchDto.getHost();
          this.guest = matchDto.getGuest();
          this.date = matchDto.getDate();
-         //this.goals = goals;
      }
 
 

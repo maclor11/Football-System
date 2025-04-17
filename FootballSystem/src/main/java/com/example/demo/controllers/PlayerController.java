@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dto.PlayerDto;
@@ -29,12 +30,12 @@ public class PlayerController {
         return playerService.findAllPlayers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}")
     public PlayerDto findPlayerById(@PathVariable Long id) {
         return playerService.findPlayerById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/{id}")
     public void deletePlayerById(@PathVariable Long id) {
         playerService.deletePlayerById(id);
     }
@@ -45,9 +46,14 @@ public class PlayerController {
     }
     
     @PostMapping
-    public void addPlayer(@RequestParam String firstName, @RequestParam String lastName, @RequestParam Character position,
-    		@RequestParam Character betterFoot, @RequestParam Integer goals, @RequestParam Integer assists, @RequestParam Club club) {
-    	playerService.addPlayer(firstName,lastName,position, betterFoot, goals, assists, club);
+    public void addPlayer(@RequestBody PlayerDto playerDto) {
+    	playerService.addPlayer(playerDto);
+    	//playerService.setClubForPlayer(playerDto.getId(), playerDto.getClub_id());
+    }
+    
+    @PutMapping(path = "/{id}")
+    public void updatePlayer(@PathVariable Long id, @RequestBody PlayerDto playerDto) {
+    	playerService.updatePlayer(id, playerDto);
     }
     
 

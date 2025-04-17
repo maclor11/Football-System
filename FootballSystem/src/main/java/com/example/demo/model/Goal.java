@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.Dto.GoalDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +24,6 @@ public class Goal {
 	@JoinColumn(name = "match_id")
 	private Match match;
 	
-	@NotBlank
 	@Positive
 	@Column(name = "goal_minute", nullable=false)
 	private Integer minute;
@@ -39,21 +40,21 @@ public class Goal {
 	
 	public Goal() {}
     
-    public Goal(Match match, Integer minute, Player scorer, Player assistant) {
+    public Goal(GoalDto goalDto) {
         super();
-        this.match = match;
-        this.minute = minute;
-        this.scorer = scorer;
-        this.assistant = assistant;
+        this.match = goalDto.getMatch();
+        this.minute = goalDto.getMinute();
+        this.scorer = goalDto.getScorer();
+        this.assistant = goalDto.getAssistant();
     }
     
-    public Goal(Long id, Match match, Integer minute, Player scorer, Player assistant) {
+    public Goal(Long id, GoalDto goalDto) {
         super();
         this.id = id;
-        this.match = match;
-        this.minute = minute;
-        this.scorer = scorer;
-        this.assistant = assistant;
+        this.match = goalDto.getMatch();
+        this.minute = goalDto.getMinute();
+        this.scorer = goalDto.getScorer();
+        this.assistant = goalDto.getAssistant();
     }
 
     public Long getId() {

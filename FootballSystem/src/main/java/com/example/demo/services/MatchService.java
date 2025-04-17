@@ -48,11 +48,11 @@ public class MatchService {
         matchRepository.deleteById(id);
     }
     
-    /*
-     * public void updateMatch(MatchDto matchDto) {
-     *   matchRepository.save(new Match(id,matchDto));
-     * }
-     */
+    
+    public void updateMatch(Long id, MatchDto matchDto) {
+        matchRepository.save(new Match(id,matchDto));
+    }
+     
     
     public CollectionModel<GoalDto> getGoalsForMatch(Long id) {
         Match match = matchRepository.findById(id)

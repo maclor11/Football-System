@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.Dto.PlayerDto;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -44,38 +46,34 @@ public class Player {
 	@JsonIgnore
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "club")
+	@JoinColumn(name = "club_id")
 	private Club club;
 	
 	public Player() {
 		
 	}
 
-	public Player(Long id, @NotBlank String firstName, @NotBlank String lastName,  Character position,
-			 Character betterFoot,  @PositiveOrZero Integer goals,
-			 @PositiveOrZero Integer assists, @NotNull Club club) {
+	public Player(Long id, PlayerDto playerDto) {
 		super();
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.position = position;
-		this.betterFoot = betterFoot;
-		this.goals = goals;
-		this.assists = assists;
-		this.club = club;
+		this.firstName = playerDto.getFirstName();
+		this.lastName = playerDto.getLastName();
+		this.position = playerDto.getPosition();
+		this.betterFoot = playerDto.getBetterFoot();
+		this.goals = playerDto.getGoals();
+		this.assists = playerDto.getAssists();
+		//this.club = club;
 	}
 	
-	public Player(@NotBlank String firstName, @NotBlank String lastName, @NotBlank Character position,
-			@NotBlank Character betterFoot, @NotBlank @PositiveOrZero Integer goals,
-			@NotBlank @PositiveOrZero Integer assists, @NotNull Club club) {
+	public Player(PlayerDto playerDto) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.position = position;
-		this.betterFoot = betterFoot;
-		this.goals = goals;
-		this.assists = assists;
-		this.club = club;
+		this.firstName = playerDto.getFirstName();
+		this.lastName = playerDto.getLastName();
+		this.position = playerDto.getPosition();
+		this.betterFoot = playerDto.getBetterFoot();
+		this.goals = playerDto.getGoals();
+		this.assists = playerDto.getAssists();
+		//this.club = club;
 	}
 
 	public Long getId() {
