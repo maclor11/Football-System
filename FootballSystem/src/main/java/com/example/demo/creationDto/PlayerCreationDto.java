@@ -1,15 +1,8 @@
-package com.example.demo.Dto;
+package com.example.demo.creationDto;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import com.example.demo.controllers.PlayerController;
-import com.example.demo.model.Club;
-import com.example.demo.model.Player;
-
-public class PlayerDto extends RepresentationModel<PlayerDto>{
+public class PlayerCreationDto {
+	
 	private Long id;
 	private String firstName;
 	private String lastName;
@@ -17,18 +10,14 @@ public class PlayerDto extends RepresentationModel<PlayerDto>{
 	private Character betterFoot;
 	private Integer goals;
 	private Integer assists;
+	private Long club_id;
 
-	public PlayerDto(Player player) {
-		super();
-		this.id = player.getId();
-		this.firstName = player.getFirstName();
-		this.lastName = player.getLastName();
-		this.position = player.getPosition();
-		this.betterFoot = player.getBetterFoot();
-		this.goals = player.getGoals();
-		this.assists = player.getAssists();
-		this.add(linkTo(methodOn(PlayerController.class)
-				.getClubForPlayer(player.getId())).withRel("club"));
+	public Long getClub_id() {
+		return club_id;
+	}
+
+	public void setClub_id(Long club_id) {
+		this.club_id = club_id;
 	}
 
 	public Long getId() {
@@ -86,7 +75,4 @@ public class PlayerDto extends RepresentationModel<PlayerDto>{
 	public void setAssists(Integer assists) {
 		this.assists = assists;
 	}
-
-	
-	
 }

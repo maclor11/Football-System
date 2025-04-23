@@ -40,7 +40,7 @@ public class MatchService {
     
     
     public void addMatch(MatchDto matchDto) {
-        matchRepository.save(new Match(matchDto));
+        //matchRepository.save(new Match(matchDto));
     }
 
     
@@ -50,7 +50,7 @@ public class MatchService {
     
     
     public void updateMatch(Long id, MatchDto matchDto) {
-        matchRepository.save(new Match(id,matchDto));
+        //matchRepository.save(new Match(id,matchDto));
     }
      
     

@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
-import com.example.demo.Dto.PlayerDto;
-
+import com.example.demo.creationDto.PlayerCreationDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -53,27 +52,25 @@ public class Player {
 		
 	}
 
-	public Player(Long id, PlayerDto playerDto) {
+	public Player(Long id, PlayerCreationDto playerCreationDto) {
 		super();
 		this.id = id;
-		this.firstName = playerDto.getFirstName();
-		this.lastName = playerDto.getLastName();
-		this.position = playerDto.getPosition();
-		this.betterFoot = playerDto.getBetterFoot();
-		this.goals = playerDto.getGoals();
-		this.assists = playerDto.getAssists();
-		//this.club = club;
+		this.firstName = playerCreationDto.getFirstName();
+		this.lastName = playerCreationDto.getLastName();
+		this.position = playerCreationDto.getPosition();
+		this.betterFoot = playerCreationDto.getBetterFoot();
+		this.goals = playerCreationDto.getGoals();
+		this.assists = playerCreationDto.getAssists();
 	}
 	
-	public Player(PlayerDto playerDto) {
+	public Player(PlayerCreationDto playerCreationDto) {
 		super();
-		this.firstName = playerDto.getFirstName();
-		this.lastName = playerDto.getLastName();
-		this.position = playerDto.getPosition();
-		this.betterFoot = playerDto.getBetterFoot();
-		this.goals = playerDto.getGoals();
-		this.assists = playerDto.getAssists();
-		//this.club = club;
+		this.firstName = playerCreationDto.getFirstName();
+		this.lastName = playerCreationDto.getLastName();
+		this.position = playerCreationDto.getPosition();
+		this.betterFoot = playerCreationDto.getBetterFoot();
+		this.goals = playerCreationDto.getGoals();
+		this.assists = playerCreationDto.getAssists();
 	}
 
 	public Long getId() {

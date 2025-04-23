@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dto.PlayerDto;
+import com.example.demo.creationDto.PlayerCreationDto;
 import com.example.demo.model.Club;
 import com.example.demo.services.PlayerService;
 
@@ -46,14 +47,13 @@ public class PlayerController {
     }
     
     @PostMapping
-    public void addPlayer(@RequestBody PlayerDto playerDto) {
-    	playerService.addPlayer(playerDto);
-    	//playerService.setClubForPlayer(playerDto.getId(), playerDto.getClub_id());
+    public void addPlayer(@RequestBody PlayerCreationDto playerCreationDto) {
+    	playerService.addPlayer(playerCreationDto);
     }
     
     @PutMapping(path = "/{id}")
-    public void updatePlayer(@PathVariable Long id, @RequestBody PlayerDto playerDto) {
-    	playerService.updatePlayer(id, playerDto);
+    public void updatePlayer(@PathVariable Long id, @RequestBody PlayerCreationDto playerCreationDto) {
+    	playerService.updatePlayer(id, playerCreationDto);
     }
     
 

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.demo.Dto.MatchDto;
+import com.example.demo.creationDto.MatchCreationDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,13 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity 
 public class Match {
@@ -47,19 +42,15 @@ public class Match {
 	
 	 public Match() {}
 
-	 public Match(MatchDto matchDto) {
-	     this.roundNumber = matchDto.getRoundNumber();
-	     this.host = matchDto.getHost();
-	     this.guest = matchDto.getGuest();
-	     this.date = matchDto.getDate();
+	 public Match(MatchCreationDto matchCreationDto) {
+	     this.roundNumber = matchCreationDto.getRoundNumber();
+	     this.date = matchCreationDto.getDate();
 	 }
 	    
-     public Match(Long id, MatchDto matchDto) {
+     public Match(Long id, MatchCreationDto matchCreationDto) {
          this.id = id;
-         this.roundNumber = matchDto.getRoundNumber();
-         this.host = matchDto.getHost();
-         this.guest = matchDto.getGuest();
-         this.date = matchDto.getDate();
+         this.roundNumber = matchCreationDto.getRoundNumber();
+         this.date = matchCreationDto.getDate();
      }
 
 
