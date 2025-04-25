@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Dto.GoalDto;
 import com.example.demo.Dto.MatchDto;
+import com.example.demo.creationDto.MatchCreationDto;
 import com.example.demo.model.Club;
 import com.example.demo.model.Match;
 import com.example.demo.repositories.ClubRepository;
@@ -39,8 +40,13 @@ public class MatchService {
     }
     
     
-    public void addMatch(MatchDto matchDto) {
-        //matchRepository.save(new Match(matchDto));
+    public void addMatch(MatchCreationDto matchCreationDto) {
+        Match match = new Match(matchCreationDto);
+        Club host = clubRepository.findById(matchCreationDto.getHostId()).orElse(null);
+        Club guest = clubRepository.findById(matchCreationDto.getGuestId()).orElse(null);
+        match.setHost(host);
+        match.setGuest(guest);
+        matchRepository.save(match);
     }
 
     
@@ -49,8 +55,13 @@ public class MatchService {
     }
     
     
-    public void updateMatch(Long id, MatchDto matchDto) {
-        //matchRepository.save(new Match(id,matchDto));
+    public void updateMatch(Long id, MatchCreationDto matchCreationDto) {
+    	Match match = new Match(id, matchCreationDto);
+        Club host = clubRepository.findById(matchCreationDto.getHostId()).orElse(null);
+        Club guest = clubRepository.findById(matchCreationDto.getGuestId()).orElse(null);
+        match.setHost(host);
+        match.setGuest(guest);
+        matchRepository.save(match);
     }
      
     
