@@ -39,8 +39,8 @@ public class Club {
  	@Column(name = "coachSurname", nullable=false)
  	private String coachSurname;
  
- 	 @OneToMany(fetch = FetchType.LAZY, mappedBy = "club", cascade =
- 	 CascadeType.ALL) private Set<Player> players;
+ 	 @OneToMany(fetch = FetchType.LAZY, mappedBy = "club", cascade =CascadeType.ALL) 
+ 	 private Set<Player> players;
 	 
 	
 	public Club() {};
@@ -53,6 +53,7 @@ public class Club {
 		this.goalBalance = clubDto.getGoalBalance();
 		this.coachSurname = clubDto.getCoachSurname();
 	}
+	
 	
 	public Club(Long id, ClubDto clubDto) {
 		super();

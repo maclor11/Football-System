@@ -47,10 +47,19 @@ public class PlayerService {
     	return player.getClub();
     }
     
+    public void setClubForPlayer(Long playerId, Long clubId) {
+    	Player player = playerRepository.findById(playerId).orElse(null);
+    	Club club = clubRepository.findById(clubId).orElse(null);
+    	player.setClub(club);
+    	playerRepository.save(player);
+    }
+    
     public void addPlayer(PlayerCreationDto playerCreationDto) {
     	 Player player = new Player(playerCreationDto);
-         Club club = clubRepository.findById(playerCreationDto.getClub_id()).orElse(null);
-         player.setClub(club);
+    	 if(playerCreationDto.getClub_id() instanceof Long) {
+	         Club club = clubRepository.findById(playerCreationDto.getClub_id()).orElse(null);
+	         player.setClub(club);
+    	 }
          playerRepository.save(player);
     }
     

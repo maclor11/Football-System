@@ -60,4 +60,11 @@ public class MatchController {
 	    public CollectionModel<GoalDto> getGoalsForMatch(@PathVariable Long id) {
 	        return matchService.getGoalsForMatch(id);
 	 } 
+	 
+	
+	@GetMapping(path = "/club/{id}")
+	public CollectionModel<MatchDto> getMatchesForClub(@PathVariable Long id){
+		return matchService.getMatchesForClub(id);
+	}
+	 
 }

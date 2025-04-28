@@ -43,10 +43,9 @@ public class Player {
 	private Integer assists;
 	
 	@JsonIgnore
-	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "club_id")
-	private Club club;
+	private Club club = null;
 	
 	public Player() {
 		

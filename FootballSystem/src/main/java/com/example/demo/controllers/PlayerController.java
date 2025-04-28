@@ -46,6 +46,11 @@ public class PlayerController {
     	return playerService.getClubForPlayer(id);
     }
     
+    @PutMapping(path = "/{playerId}/club/{clubId}")
+    public void setClubForPlayer(@PathVariable Long playerId, @PathVariable Long clubId) {
+    	playerService.setClubForPlayer(playerId, clubId);
+    }
+    
     @PostMapping
     public void addPlayer(@RequestBody PlayerCreationDto playerCreationDto) {
     	playerService.addPlayer(playerCreationDto);
