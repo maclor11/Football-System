@@ -100,6 +100,5 @@ public class MatchService {
     			.map(MatchDto::new)
     			.collect(Collectors.toList());
     	return CollectionModel.of(awayMatches);
-    }
-    
+    } 
 }
