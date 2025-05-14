@@ -85,4 +85,21 @@ public class MatchService {
     	m1.addAll(m2);
     	return CollectionModel.of(m1);
     }
+    
+    public CollectionModel<MatchDto> getHomeMatchesForClub(Long id){
+    	Club club = clubRepository.findById(id).orElse(null);
+    	List<MatchDto> homeMatches = matchRepository.findByHost(club).stream()
+    			.map(MatchDto::new)
+    			.collect(Collectors.toList());
+    	return CollectionModel.of(homeMatches);
+    }
+    
+    public CollectionModel<MatchDto> getAwayMatchesForClub(Long id){
+    	Club club = clubRepository.findById(id).orElse(null);
+    	List<MatchDto> awayMatches = matchRepository.findByGuest(club).stream()
+    			.map(MatchDto::new)
+    			.collect(Collectors.toList());
+    	return CollectionModel.of(awayMatches);
+    }
+    
 }

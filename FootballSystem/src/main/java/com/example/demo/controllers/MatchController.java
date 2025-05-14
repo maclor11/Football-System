@@ -67,4 +67,13 @@ public class MatchController {
 		return matchService.getMatchesForClub(id);
 	}
 	 
+	@GetMapping(path = "/club/{id}/home")
+	public CollectionModel<MatchDto> getHomeMatchesForClub(@PathVariable Long id){
+		return matchService.getHomeMatchesForClub(id);
+	}
+	
+	@GetMapping(path = "/club/{id}/away")
+	public CollectionModel<MatchDto> getAwayMatchesForClub(@PathVariable Long id){
+		return matchService.getAwayMatchesForClub(id);
+	}
 }
