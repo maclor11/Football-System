@@ -36,6 +36,8 @@ public class MatchService {
     
     public MatchDto findMatchById(Long id) {
         Match match = matchRepository.findById(id).orElse(null);
+        if (match == null) 
+            return null;
         return new MatchDto(match);
     }
     
@@ -101,4 +103,14 @@ public class MatchService {
     			.collect(Collectors.toList());
     	return CollectionModel.of(awayMatches);
     } 
+    
+    public Club getHostForMatch(Long id) {
+        Match match = matchRepository.findById(id).orElse(null);
+        return match.getHost();
+    }
+    
+    public Club getGuestForMatch(Long id) {
+        Match match = matchRepository.findById(id).orElse(null);
+        return match.getGuest();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.example.demo.creationDto.GoalCreationDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +24,7 @@ public class Goal {
 	@JoinColumn(name = "match_id")
 	private Match match;
 	
+	@NotNull
 	@Positive
 	@Column(name = "goal_minute", nullable=false)
 	private Integer minute;

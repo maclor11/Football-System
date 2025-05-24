@@ -3,6 +3,7 @@ package com.example.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Dto.GoalDto;
 import com.example.demo.creationDto.GoalCreationDto;
 import com.example.demo.model.Goal;
 import com.example.demo.model.Match;
@@ -22,6 +23,13 @@ public class GoalService {
         this.goalRepository = goalRepository;
         this.matchRepository = matchRepository;
         this.playerRepository = playerRepository;
+    }
+    
+    public GoalDto findGoalById(Long id) {
+    	Goal goal = goalRepository.findById(id).orElse(null);
+    	if(goal == null)
+    		return null;
+    	return new GoalDto(goal);
     }
 
     public void addGoal(GoalCreationDto goalCreationDto) {
@@ -48,6 +56,21 @@ public class GoalService {
 
     public void deleteGoalById(Long id) {
         goalRepository.deleteById(id);
+    }
+    
+    public Match getMatchForGoal(Long id) {
+    	Goal goal = goalRepository.findById(id).orElse(null);
+    	return goal.getMatch();
+    }
+    
+    public Player getScorerForGoal(Long id) {
+    	Goal goal = goalRepository.findById(id).orElse(null);
+    	return goal.getScorer();
+    }
+    
+    public Player getAssistantForGoal(Long id) {
+    	Goal goal = goalRepository.findById(id).orElse(null);
+    	return goal.getAssistant();
     }
 
 }

@@ -40,6 +40,8 @@ public class PlayerService {
 
     public PlayerDto findPlayerById(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
+        if(player == null)
+        	return null;
         return new PlayerDto(player);
     }
 

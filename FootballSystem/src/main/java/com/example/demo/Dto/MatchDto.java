@@ -15,8 +15,6 @@ import com.example.demo.model.Match;
 public class MatchDto extends RepresentationModel<MatchDto>{
     private Long id;
     private Integer roundNumber;
-    private Club host;
-    private Club guest;
     private LocalDateTime date;
 
     public MatchDto() {}
@@ -25,8 +23,10 @@ public class MatchDto extends RepresentationModel<MatchDto>{
         super();
         this.id = match.getId();
         this.roundNumber = match.getRoundNumber();
-        this.host = match.getHost();
-        this.guest = match.getGuest();
+        this.add(linkTo(methodOn(MatchController.class)
+                .getHostForMatch(match.getId())).withRel("host"));
+        this.add(linkTo(methodOn(MatchController.class)
+                .getGuestForMatch(match.getId())).withRel("guest"));
         this.date = match.getDate();  
         this.add(linkTo(methodOn(MatchController.class)
                .getGoalsForMatch(match.getId())).withRel("goals"));
@@ -46,22 +46,6 @@ public class MatchDto extends RepresentationModel<MatchDto>{
 
     public void setRoundNumber(Integer roundNumber) {
         this.roundNumber = roundNumber;
-    }
-
-    public Club getHost() {
-        return host;
-    }
-
-    public void setHost(Club host) {
-        this.host = host;
-    }
-
-    public Club getGuest() {
-        return guest;
-    }
-
-    public void setGuest(Club guest) {
-        this.guest = guest;
     }
 
     public LocalDateTime getDate() {

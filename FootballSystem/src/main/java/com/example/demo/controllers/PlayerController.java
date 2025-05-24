@@ -251,4 +251,6 @@ public class PlayerController {
                     .body("Błąd podczas pobierania asyst dla gracza o ID " + id + ": " + e.getMessage());
         }
     }
+    
+    
 }
