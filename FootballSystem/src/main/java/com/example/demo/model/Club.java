@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
@@ -30,9 +31,11 @@ public class Club {
  
  	@PositiveOrZero
  	@Column(name="points", nullable=false)
+ 	@NotNull
  	private Integer points;
  	
  	@Column(name = "goal_balance", nullable=false)
+ 	@NotNull
  	private Integer goalBalance;
  
  	@NotBlank

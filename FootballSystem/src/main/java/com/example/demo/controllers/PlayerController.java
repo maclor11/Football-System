@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Dto.ClubDto;
+import com.example.demo.Dto.GoalDto;
 import com.example.demo.Dto.PlayerDto;
 import com.example.demo.creationDto.PlayerCreationDto;
 import com.example.demo.model.Club;
+import com.example.demo.services.ClubService;
+import com.example.demo.services.MatchService;
 import com.example.demo.services.PlayerService;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping(path = "/player")
@@ -28,11 +31,16 @@ import jakarta.validation.constraints.Min;
 public class PlayerController {
 
     private final PlayerService playerService;
+    private final ClubService clubService;
+    private final MatchService matchService;
 
     @Autowired
-    public PlayerController(PlayerService playerService) {
+    public PlayerController(PlayerService playerService, ClubService clubService, MatchService matchService) {
         this.playerService = playerService;
+        this.clubService = clubService;
+        this.matchService = matchService;
     }
+    
 
     @GetMapping
     public ResponseEntity<?> findAllPlayers() {
@@ -50,7 +58,11 @@ public class PlayerController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> findPlayerById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> findPlayerById(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
+        }
         try {
             PlayerDto player = playerService.findPlayerById(id);
             if (player == null) {
@@ -68,10 +80,19 @@ public class PlayerController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deletePlayerById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> deletePlayerById(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
+        }
         try {
+        	PlayerDto player = playerService.findPlayerById(id);
+            if (player == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + id + " nie został znaleziony.");
+            }
             playerService.deletePlayerById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body("Zawodnik o ID " + id + " został pomyślnie usunięty.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
@@ -83,7 +104,11 @@ public class PlayerController {
     }
 
     @GetMapping(path = "/{id}/club")
-    public ResponseEntity<?> getClubForPlayer(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> getClubForPlayer(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
+        }
         try {
             Club club = playerService.getClubForPlayer(id);
             if (club == null) {
@@ -101,9 +126,22 @@ public class PlayerController {
     }
 
     @PutMapping(path = "/{playerId}/club/{clubId}")
-    public ResponseEntity<?> setClubForPlayer(@PathVariable @Min(1) Long playerId,
-            @PathVariable @Min(1) Long clubId) {
+    public ResponseEntity<?> setClubForPlayer(@PathVariable Long playerId,
+            @PathVariable Long clubId) {
+        if (playerId == null || playerId <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
+        }
+        if (clubId == null || clubId <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID klubu. ID musi być liczbą większą od zera.");
+        }
         try {
+        	ClubDto club = clubService.findClubById(clubId);
+            if (club == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + clubId + " nie został znaleziony.");
+            }
             playerService.setClubForPlayer(playerId, clubId);
             return ResponseEntity.ok()
                     .body("Zawodnik o ID " + playerId + " został przypisany do klubu o ID " + clubId + ".");
@@ -124,6 +162,11 @@ public class PlayerController {
                     .body("Dane zawodnika nie mogą być puste.");
         }
         try {
+        	ClubDto club = clubService.findClubById(playerCreationDto.getClub_id());
+            if (club == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + playerCreationDto.getClub_id() + " nie został znaleziony.");
+            }
             playerService.addPlayer(playerCreationDto);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Zawodnik został pomyślnie utworzony.");
@@ -137,13 +180,22 @@ public class PlayerController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updatePlayer(@PathVariable @Min(1) Long id,
-            @RequestBody @Valid PlayerCreationDto playerCreationDto) {
+    public ResponseEntity<?> updatePlayer(@PathVariable Long id,
+            @RequestBody PlayerCreationDto playerCreationDto) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
+        }
         if (playerCreationDto == null) {
             return ResponseEntity.badRequest()
                     .body("Dane zawodnika nie mogą być puste.");
         }
         try {
+        	ClubDto club = clubService.findClubById(playerCreationDto.getClub_id());
+            if (club == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + playerCreationDto.getClub_id() + " nie został znaleziony.");
+            }
             playerService.updatePlayer(id, playerCreationDto);
             return ResponseEntity.ok()
                     .body("Zawodnik o ID " + id + " został pomyślnie zaktualizowany.");
@@ -153,6 +205,50 @@ public class PlayerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Błąd podczas aktualizacji zawodnika o ID " + id + ": " + e.getMessage());
+        }
+    }
+    
+    @GetMapping(path = "/{id}/goals")
+    public ResponseEntity<?> getGoalsForPlayer(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID gracza. ID musi być liczbą większą od zera.");
+        }
+        try {
+            CollectionModel<GoalDto> goals = playerService.findGoalsForScorer(id);
+            if (goals == null || !goals.getContent().iterator().hasNext()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Nie znaleziono goli dla gracza o ID " + id + ".");
+            }
+            return ResponseEntity.ok(goals);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID gracza: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Błąd podczas pobierania goli dla gracza o ID " + id + ": " + e.getMessage());
+        }
+    }
+    
+    @GetMapping(path = "/{id}/assists")
+    public ResponseEntity<?> getAssistsForPlayer(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID gracza. ID musi być liczbą większą od zera.");
+        }
+        try {
+            CollectionModel<GoalDto> goals = playerService.findAssistsForPlayer(id);
+            if (goals == null || !goals.getContent().iterator().hasNext()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Nie znaleziono asyst dla gracza o ID " + id + ".");
+            }
+            return ResponseEntity.ok(goals);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID gracza: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Błąd podczas pobierania asyst dla gracza o ID " + id + ": " + e.getMessage());
         }
     }
 }

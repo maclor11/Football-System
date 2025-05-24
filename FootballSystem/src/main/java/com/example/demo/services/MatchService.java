@@ -73,7 +73,7 @@ public class MatchService {
                 .collect(Collectors.toList());
         return CollectionModel.of(goalsDTO);
     }   
-    
+
     public CollectionModel<MatchDto> getMatchesForClub(Long id) {
     	Club club = clubRepository.findById(id).orElse(null);
     	List<MatchDto> m1 = matchRepository.findByGuest(club).stream()

@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Dto.ClubDto;
 import com.example.demo.Dto.GoalDto;
 import com.example.demo.Dto.MatchDto;
 import com.example.demo.creationDto.MatchCreationDto;
+import com.example.demo.services.ClubService;
 import com.example.demo.services.MatchService;
+import com.example.demo.services.PlayerService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -28,20 +31,21 @@ import jakarta.validation.constraints.Min;
 public class MatchController {
 
     private final MatchService matchService;
+    private final ClubService clubService;
+    private final PlayerService playerService;
+    
 
     @Autowired
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, ClubService clubService, PlayerService playerService) {
         this.matchService = matchService;
+        this.clubService = clubService;
+        this.playerService = playerService;
     }
 
     @GetMapping
     public ResponseEntity<?> findAllMatches() {
         try {
             CollectionModel<MatchDto> matches = matchService.findAllMatches();
-            if (matches == null || !matches.getContent().iterator().hasNext()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nie znaleziono żadnych meczów.");
-            }
             return ResponseEntity.ok(matches);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -50,7 +54,11 @@ public class MatchController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> findMatchById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> findMatchById(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID meczu. ID musi być liczbą większą od zera.");
+        }
         try {
             MatchDto match = matchService.findMatchById(id);
             if (match == null) {
@@ -68,10 +76,19 @@ public class MatchController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteMatchById(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> deleteMatchById(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID meczu. ID musi być liczbą większą od zera.");
+        }
         try {
+        	MatchDto match = matchService.findMatchById(id);
+            if (match == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Mecz o ID " + id + " nie został znaleziony.");
+            }
             matchService.deleteMatchById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body("Mecz o ID " + id + " został pomyślnie usunięty.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
@@ -89,6 +106,20 @@ public class MatchController {
                     .body("Dane meczu nie mogą być puste.");
         }
         try {
+        	ClubDto host = clubService.findClubById(matchCreationDto.getHostId());
+        	ClubDto guest = clubService.findClubById(matchCreationDto.getGuestId());
+            if (host == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + matchCreationDto.getHostId() + " nie został znaleziony.");
+            }
+            if (guest == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + matchCreationDto.getGuestId() + " nie został znaleziony.");
+            }
+            if (matchCreationDto.getHostId() == matchCreationDto.getGuestId()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Ten sam klub nie może być jednocześnie gościem i gospodarzem");
+            }
             matchService.addMatch(matchCreationDto);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Mecz został pomyślnie utworzony.");
@@ -102,13 +133,31 @@ public class MatchController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateMatch(@PathVariable @Min(1) Long id,
+    public ResponseEntity<?> updateMatch(@PathVariable Long id,
             @RequestBody @Valid MatchCreationDto matchCreationDto) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID meczu. ID musi być liczbą większą od zera.");
+        }
         if (matchCreationDto == null) {
             return ResponseEntity.badRequest()
                     .body("Dane meczu nie mogą być puste.");
         }
         try {
+        	ClubDto host = clubService.findClubById(matchCreationDto.getHostId());
+        	ClubDto guest = clubService.findClubById(matchCreationDto.getGuestId());
+            if (host == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + matchCreationDto.getHostId() + " nie został znaleziony.");
+            }
+            if (guest == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Klub o ID " + matchCreationDto.getGuestId() + " nie został znaleziony.");
+            }
+            if (matchCreationDto.getHostId() == matchCreationDto.getGuestId()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Ten sam klub nie może być jednocześnie gościem i gospodarzem");
+            }
             matchService.updateMatch(id, matchCreationDto);
             return ResponseEntity.ok()
                     .body("Mecz o ID " + id + " został pomyślnie zaktualizowany.");
@@ -122,7 +171,11 @@ public class MatchController {
     }
 
     @GetMapping(path = "/{id}/goals")
-    public ResponseEntity<?> getGoalsForMatch(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<?> getGoalsForMatch(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest()
+                    .body("Nieprawidłowe ID meczu. ID musi być liczbą większą od zera.");
+        }
         try {
             CollectionModel<GoalDto> goals = matchService.getGoalsForMatch(id);
             if (goals == null || !goals.getContent().iterator().hasNext()) {
@@ -138,58 +191,5 @@ public class MatchController {
                     .body("Błąd podczas pobierania goli dla meczu o ID " + id + ": " + e.getMessage());
         }
     }
-
-    @GetMapping(path = "/club/{id}")
-    public ResponseEntity<?> getMatchesForClub(@PathVariable @Min(1) Long id) {
-        try {
-            CollectionModel<MatchDto> matches = matchService.getMatchesForClub(id);
-            if (matches == null || !matches.getContent().iterator().hasNext()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nie znaleziono meczów dla klubu o ID " + id + ".");
-            }
-            return ResponseEntity.ok(matches);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body("Nieprawidłowe ID klubu: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Błąd podczas pobierania meczów dla klubu o ID " + id + ": " + e.getMessage());
-        }
-    }
-
-    @GetMapping(path = "/club/{id}/home")
-    public ResponseEntity<?> getHomeMatchesForClub(@PathVariable @Min(1) Long id) {
-        try {
-            CollectionModel<MatchDto> homeMatches = matchService.getHomeMatchesForClub(id);
-            if (homeMatches == null || !homeMatches.getContent().iterator().hasNext()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nie znaleziono meczów domowych dla klubu o ID " + id + ".");
-            }
-            return ResponseEntity.ok(homeMatches);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body("Nieprawidłowe ID klubu: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Błąd podczas pobierania meczów domowych dla klubu o ID " + id + ": " + e.getMessage());
-        }
-    }
-
-    @GetMapping(path = "/club/{id}/away")
-    public ResponseEntity<?> getAwayMatchesForClub(@PathVariable @Min(1) Long id) {
-        try {
-            CollectionModel<MatchDto> awayMatches = matchService.getAwayMatchesForClub(id);
-            if (awayMatches == null || !awayMatches.getContent().iterator().hasNext()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nie znaleziono meczów wyjazdowych dla klubu o ID " + id + ".");
-            }
-            return ResponseEntity.ok(awayMatches);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body("Nieprawidłowe ID klubu: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Błąd podczas pobierania meczów wyjazdowych dla klubu o ID " + id + ": " + e.getMessage());
-        }
-    }
+    
 }
