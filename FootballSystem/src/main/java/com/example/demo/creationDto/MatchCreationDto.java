@@ -2,13 +2,25 @@ package com.example.demo.creationDto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 
 public class MatchCreationDto {
 	
 	private Long id;
+	
+	@NotNull(message = "Numer rundy jest wymagany")
+	@Positive(message = "Numer rundy musi być liczbą nieujemną")
     private Integer roundNumber;
+	
+	@NotNull(message = "ID gospodarza jest wymagane")
     private Long hostId;
+	
+	@NotNull(message = "ID gościa jest wymagane")
     private Long guestId;
+	
+	@NotNull(message = "Data jest wymagana")
     private LocalDateTime date;
    
 	public Long getId() {

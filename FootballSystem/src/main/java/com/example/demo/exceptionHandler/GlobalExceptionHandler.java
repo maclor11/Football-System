@@ -1,7 +1,12 @@
 package com.example.demo.exceptionHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -20,7 +25,23 @@ public class GlobalExceptionHandler {
         }
         return "nieprawidłowe dane wejściowe";
     }
-	
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        StringBuilder errorMessage = new StringBuilder("Wystąpiły błędy:\n");
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errorMessage
+                .append("- ")
+                .append(error.getField())
+                .append(": ")
+                .append(error.getDefaultMessage())
+                .append("\n");
+        });
+
+        return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
+    }
+    
 	@ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         String message = ex.getMessage();
@@ -47,13 +68,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest()
                 .body("Błąd formatu danych w polu '" + ex.getPath().get(0).getFieldName() + 
                       "': oczekiwano liczby, otrzymano tekst.");
-    }
-    
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.badRequest()
-                .body("Nieprawidłowy typ parametru '" + ex.getName() + 
-                      "': oczekiwano " + ex.getRequiredType().getSimpleName());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

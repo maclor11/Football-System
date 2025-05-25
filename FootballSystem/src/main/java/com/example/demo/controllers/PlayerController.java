@@ -18,7 +18,7 @@ import com.example.demo.Dto.ClubDto;
 import com.example.demo.Dto.GoalDto;
 import com.example.demo.Dto.PlayerDto;
 import com.example.demo.creationDto.PlayerCreationDto;
-import com.example.demo.model.Club;
+import com.example.demo.model.Player;
 import com.example.demo.services.ClubService;
 import com.example.demo.services.MatchService;
 import com.example.demo.services.PlayerService;
@@ -110,12 +110,12 @@ public class PlayerController {
                     .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
         }
         try {
-            Club club = playerService.getClubForPlayer(id);
-            if (club == null) {
+            PlayerDto player = playerService.findPlayerById(id);
+            if (player == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Nie znaleziono klubu dla zawodnika o ID " + id + ".");
+                        .body("Nie znaleziono zawodnika o ID " + id + ".");
             }
-            return ResponseEntity.ok(club);
+            return ResponseEntity.ok(player);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
                     .body("Nieprawidłowe ID zawodnika: " + e.getMessage());
@@ -137,6 +137,11 @@ public class PlayerController {
                     .body("Nieprawidłowe ID klubu. ID musi być liczbą większą od zera.");
         }
         try {
+            PlayerDto player = playerService.findPlayerById(playerId);
+            if (player == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Nie znaleziono zawodnika o ID " + playerId + ".");
+            }
         	ClubDto club = clubService.findClubById(clubId);
             if (club == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -157,10 +162,6 @@ public class PlayerController {
 
     @PostMapping
     public ResponseEntity<?> addPlayer(@RequestBody @Valid PlayerCreationDto playerCreationDto) {
-        if (playerCreationDto == null) {
-            return ResponseEntity.badRequest()
-                    .body("Dane zawodnika nie mogą być puste.");
-        }
         try {
         	ClubDto club = clubService.findClubById(playerCreationDto.getClub_id());
             if (club == null) {
@@ -181,14 +182,10 @@ public class PlayerController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> updatePlayer(@PathVariable Long id,
-            @RequestBody PlayerCreationDto playerCreationDto) {
+            @RequestBody @Valid PlayerCreationDto playerCreationDto) {
         if (id == null || id <= 0) {
             return ResponseEntity.badRequest()
                     .body("Nieprawidłowe ID zawodnika. ID musi być liczbą większą od zera.");
-        }
-        if (playerCreationDto == null) {
-            return ResponseEntity.badRequest()
-                    .body("Dane zawodnika nie mogą być puste.");
         }
         try {
         	ClubDto club = clubService.findClubById(playerCreationDto.getClub_id());

@@ -22,6 +22,7 @@ public class Club {
  	private Long id; 
  
 	@NotBlank
+	@NotNull
  	@Column(name = "name", nullable=false)
  	private String name;
  	
@@ -39,6 +40,7 @@ public class Club {
  	private Integer goalBalance;
  
  	@NotBlank
+ 	@NotNull
  	@Column(name = "coachSurname", nullable=false)
  	private String coachSurname;
  

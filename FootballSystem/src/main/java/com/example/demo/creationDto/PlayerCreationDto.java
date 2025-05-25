@@ -1,15 +1,34 @@
 package com.example.demo.creationDto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class PlayerCreationDto {
 	
 	private Long id;
+	
+	@NotBlank(message = "Imię nie może być puste")
 	private String firstName;
+	
+	@NotBlank(message = "Nazwisko nie może być puste")
 	private String lastName;
+	
+	@NotNull(message = "Pozycja nie może być pusta")
 	private Character position;
+	
+	@NotNull(message = "Lepsza noga nie może być pusta")
 	private Character betterFoot;
+	
+	@NotNull(message = "Liczba goli nie może być pusta")
+	@PositiveOrZero(message = "Liczba goli nie może być ujemna")
 	private Integer goals;
+	
+	@NotNull(message = "Liczba asyst nie może być pusta")
+	@PositiveOrZero(message = "Liczba asyst nie może być ujemna")
 	private Integer assists;
+	
+	@NotNull(message = "ID klubu nie może być puste")
 	private Long club_id;
 
 	public Long getClub_id() {

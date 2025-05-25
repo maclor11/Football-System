@@ -40,10 +40,6 @@ public class GoalController {
 	
     @PostMapping
     public ResponseEntity<?> addGoal(@RequestBody @Valid GoalCreationDto goalCreationDto) {
-        if (goalCreationDto == null) {
-            return ResponseEntity.badRequest()
-                    .body("Dane gola nie mogą być puste.");
-        }
         try {
         	MatchDto match = matchService.findMatchById(goalCreationDto.getMatchId());
         	PlayerDto scorer = playerService.findPlayerById(goalCreationDto.getScorerId());
@@ -61,6 +57,8 @@ public class GoalController {
                         .body("Gracz o ID " + goalCreationDto.getAssistantId() + " nie został znaleziony.");
             }
             goalService.addGoal(goalCreationDto);
+            scorer.setGoals(scorer.getGoals() + 1);
+            assistant.setAssists(assistant.getAssists() + 1);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Gol został pomyślnie utworzony.");
         } catch (IllegalArgumentException e) {
@@ -78,10 +76,6 @@ public class GoalController {
         if (id == null || id <= 0) {
             return ResponseEntity.badRequest()
                     .body("Nieprawidłowe ID gola. ID musi być liczbą większą od zera.");
-        }
-        if (goalCreationDto == null) {
-            return ResponseEntity.badRequest()
-                    .body("Dane gola nie mogą być puste.");
         }
         try {
         	MatchDto match = matchService.findMatchById(goalCreationDto.getMatchId());
