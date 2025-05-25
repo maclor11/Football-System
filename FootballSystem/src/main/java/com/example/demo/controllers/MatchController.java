@@ -32,14 +32,12 @@ public class MatchController {
 
     private final MatchService matchService;
     private final ClubService clubService;
-    private final PlayerService playerService;
     
 
     @Autowired
-    public MatchController(MatchService matchService, ClubService clubService, PlayerService playerService) {
+    public MatchController(MatchService matchService, ClubService clubService) {
         this.matchService = matchService;
         this.clubService = clubService;
-        this.playerService = playerService;
     }
 
     @GetMapping

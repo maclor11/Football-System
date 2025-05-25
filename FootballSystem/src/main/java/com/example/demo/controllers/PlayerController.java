@@ -32,13 +32,11 @@ public class PlayerController {
 
     private final PlayerService playerService;
     private final ClubService clubService;
-    private final MatchService matchService;
 
     @Autowired
-    public PlayerController(PlayerService playerService, ClubService clubService, MatchService matchService) {
+    public PlayerController(PlayerService playerService, ClubService clubService) {
         this.playerService = playerService;
         this.clubService = clubService;
-        this.matchService = matchService;
     }
     
 

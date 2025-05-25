@@ -1,16 +1,11 @@
 package com.example.demo.exceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 @ControllerAdvice
@@ -47,8 +42,7 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
         
         if (message.contains("Cannot deserialize value of type `java.lang.Integer`") ||
-            message.contains("Cannot deserialize value of type `java.lang.Long`") ||
-            message.contains("Cannot deserialize value of type `java.lang.Double`")) {
+            message.contains("Cannot deserialize value of type `java.lang.Long`")) {
             return ResponseEntity.badRequest()
                     .body("Błąd formatu danych: sprawdź czy wszystkie pola numeryczne zawierają prawidłowe liczby, a nie tekst.");
         }
