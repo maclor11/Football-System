@@ -1,5 +1,4 @@
 -- data.sql
-
 DELETE FROM goal;
 DELETE FROM match;
 DELETE FROM player;
